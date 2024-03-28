@@ -1,18 +1,26 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./MatrixItem.module.scss";
 import { IMatrixItem } from "../@types/matrixItem";
 import { useAppDispatch } from "../../utils/hooks";
-import { incrementValue } from "../../redux/slice/matrix";
+import { checkRange, incrementValue } from "../../redux/slice/matrix";
 import classNames from "classnames";
 import { connect } from "react-redux";
 import { RootState } from "../../redux";
 
 const MatrixItem: React.FC<any> = React.memo(
-  ({ i, j, indexRow, visionPercent, itemValue, percentValue }) => {
+  ({
+    i,
+    j,
+    indexRow,
+    visionPercent,
+    itemValue,
+    percentValue,
+    inRange,
+  }) => {
     const dispatch = useAppDispatch();
 
     const incrementValueItem = useCallback(
-      (i:number , j:number) => {
+      (i: number, j: number) => {
         dispatch(incrementValue({ i, j }));
       },
       [dispatch]
@@ -20,9 +28,18 @@ const MatrixItem: React.FC<any> = React.memo(
 
     console.log("item", itemValue);
 
+    const mouseEnter = () => {
+      dispatch(checkRange({ rangeValue: itemValue }));
+    };
+    const mouseLeave = () => {
+      dispatch(checkRange({ rangeValue: 0 }));
+    };
+
     return (
       <div
-        onClick={() => incrementValueItem(i,j)}
+        onMouseEnter={mouseEnter}
+        onMouseLeave={mouseLeave}
+        onClick={() => incrementValueItem(i, j)}
         style={
           visionPercent && i === indexRow
             ? {
@@ -33,6 +50,7 @@ const MatrixItem: React.FC<any> = React.memo(
         }
         className={classNames(styles.root, {
           [styles.visible]: visionPercent && i === indexRow,
+          [styles.similar]: inRange === true,
         })}
       >
         {visionPercent && i === indexRow
@@ -46,7 +64,8 @@ const MatrixItem: React.FC<any> = React.memo(
       (prevProps.i !== nextProps.i && prevProps.j !== nextProps.j) ||
       prevProps.itemValue !== nextProps.itemValue ||
       (prevProps.visionPercent !== nextProps.visionPercent &&
-        nextProps.indexRow === nextProps.i);
+        nextProps.indexRow === nextProps.i) ||
+      prevProps.inRange !== nextProps.inRange;
     return !shouldUpdate;
   }
 );
@@ -55,6 +74,9 @@ const mapStateToProps = () => {
   let prevItemValue: any = null;
 
   return (state: RootState, ownProps: IMatrixItem) => {
+    const inRange =
+      state.matrixSlice.matrix &&
+      state.matrixSlice.matrix[ownProps.i][ownProps.j].inRange;
     const itemValue =
       state.matrixSlice.matrix &&
       state.matrixSlice.matrix[ownProps.i][ownProps.j].value;
@@ -77,6 +99,7 @@ const mapStateToProps = () => {
       indexRow,
       visionPercent,
       shouldUpdate,
+      inRange,
     };
   };
 };

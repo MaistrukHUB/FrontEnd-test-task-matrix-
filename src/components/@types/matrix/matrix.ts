@@ -1,4 +1,4 @@
-export type matrixItem = { value: number; id: string ;percentageInAmount:number};
+export type matrixItem = { value: number; id: string ;percentageInAmount:number;inRange: boolean};
 export type matrixRow = matrixItem[];
 export type matrix = matrixRow[];
 

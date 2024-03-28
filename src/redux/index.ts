@@ -5,7 +5,7 @@ import sumsRowsSlice from "./slice/sumsRows";
 const store = configureStore({
   reducer: {
     matrixSlice,
-    sumsRowsSlice
+    sumsRowsSlice,
   },
 });
 

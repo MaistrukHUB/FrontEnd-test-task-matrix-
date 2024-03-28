@@ -28,6 +28,7 @@ export function initialMatrix(n: number, m: number): matrix {
         value: rowValues[j],
         id: `${i},${j}`,
         percentageInAmount: parseFloat(percentageInAmount),
+        inRange:false
       };
     }
   }

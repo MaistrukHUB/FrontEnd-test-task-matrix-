@@ -28,10 +28,7 @@ const matrixSlice = createSlice({
   name: "matrix",
   initialState,
   reducers: {
-    checkRange(
-      state,
-      action: PayloadAction<{ rangeValue: number  }>
-    ) {
+    checkRange(state, action: PayloadAction<{ rangeValue: number }>) {
       if (action.payload.rangeValue !== 0) {
         const { rangeValue } = action.payload;
         const x = rangeValue + 10;
@@ -49,7 +46,6 @@ const matrixSlice = createSlice({
           });
         }
       } else {
-        
         if (state.matrix) {
           state.matrix.forEach((row) => {
             row.forEach((item) => {
@@ -84,6 +80,9 @@ const matrixSlice = createSlice({
     },
 
     deleteRow(state, action: PayloadAction<{ rowIndex: number }>) {
+      if (state.n) {
+        state.n = state.n - 1;
+      }
       if (
         state.matrix &&
         action.payload.rowIndex >= 0 &&
@@ -98,6 +97,10 @@ const matrixSlice = createSlice({
       }
     },
     addRow(state): void {
+      if (state.n) {
+        state.n = state.n + 1;
+      }
+
       if (state.n !== null && state.n > 0) {
         const newRow: matrixItem[] = [];
         const rowIndex = state.matrix?.length ?? 0;

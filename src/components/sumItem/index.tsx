@@ -9,13 +9,11 @@ const SumItem: React.FC<ISumItem> = React.memo(({ i }) => {
 
   const showItem = () => {
     dispatch(setInvisible());
-
   };
 
   const sumValue = useAppSelector(
     (state) => state.matrixSlice.sums[i]
   );
-  console.log('sum',sumValue);
 
   const showPercent = () => {
     dispatch(setVisible({ indexRow: i, sumValue }));

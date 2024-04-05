@@ -1,3 +1,4 @@
 export interface IAveragesItem {
-  item: number;
+  i: number;
+  item?: number;
 }

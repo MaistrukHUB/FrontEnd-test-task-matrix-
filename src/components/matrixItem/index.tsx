@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { connect } from "react-redux";
 import { RootState } from "../../redux";
 
-const MatrixItem: React.FC<any> = React.memo(
+const MatrixItem: React.FC<IMatrixItem> = React.memo(
   ({
     i,
     j,
@@ -25,11 +25,10 @@ const MatrixItem: React.FC<any> = React.memo(
       },
       [dispatch]
     );
-
-    console.log("item", itemValue);
+    console.log(itemValue);
 
     const mouseEnter = () => {
-      dispatch(checkRange({ rangeValue: itemValue }));
+      dispatch(checkRange({ rangeValue: itemValue ? itemValue : 0 }));
     };
     const mouseLeave = () => {
       dispatch(checkRange({ rangeValue: 0 }));
